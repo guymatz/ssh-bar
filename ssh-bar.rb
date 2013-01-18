@@ -1,4 +1,4 @@
-#!env ruby
+#/!usr/bin/ruby
 
 require 'gtk2'
 
@@ -26,22 +26,23 @@ class RubyApp < Gtk::Window
 		fixed = Gtk::Fixed.new
 
 		entry = Gtk::Entry.new
+		entry.signal_connect( "activate" ) { |e| open_xterm( e ) }
 		fixed.put entry, 50, 50
 
 		button = Gtk::Button.new "Go"
 		fixed.put button, 60, 100
 
 		button.signal_connect "clicked" do
-			puts "/usr/bin/xfce4-terminal --command \"ssh -XY #{entry.text}\""
-			exec("/usr/bin/xfce4-terminal --command \"ssh -XY #{entry.text}\"")
-			Gtk.main_quit
+			open_xterm entry
 		end
 
 		add fixed
 	end
 
-	def on_key_release sender, event, label
-		label.set_text sender.text
+	def open_xterm ( entry )
+		puts "/usr/bin/xfce4-terminal --command \"ssh -XY #{entry.text}\""
+		exec("/usr/bin/xfce4-terminal --command \"ssh -XY #{entry.text}\"")
+		Gtk.main_quit
 	end
 
 end
