@@ -14,6 +14,11 @@ class RubyApp < Gtk::Window
       Gtk.main_quit
     end
 
+    # What to do if escape is pressed
+    signal_connect "key_press_event" do |widget, event|
+      Gtk.main_quit if event.keyval == Gdk::Keyval::GDK_Escape
+    end
+
     # Call function to assemble the UI (defined below)
     init_ui
 
@@ -54,7 +59,7 @@ class RubyApp < Gtk::Window
     # SHould check that the machine exists and give a warning if it
     # can't be found in DNS, etc.
     #puts "/usr/bin/xfce4-terminal --command \"ssh -XY #{entry.text}\""
-    exec("/usr/bin/xfce4-terminal --command \"ssh -XY #{entry.text}\"")
+    exec("/usr/bin/gnome-terminal --command \"ssh -XY #{entry.text}\"")
     Gtk.main_quit
   end
 
