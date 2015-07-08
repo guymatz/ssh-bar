@@ -59,7 +59,19 @@ class RubyApp < Gtk::Window
     # SHould check that the machine exists and give a warning if it
     # can't be found in DNS, etc.
     #puts "/usr/bin/xfce4-terminal --command \"ssh -XY #{entry.text}\""
-    exec("/usr/bin/gnome-terminal --command \"ssh -XY #{entry.text}\"")
+    term = 'xterm'
+    terminals = [ '/usr/bin/gnome-terminal',
+                  '/usr/bin/mate-terminal',
+                  '/usr/bin/xterm'
+                ]
+    terminals.each do |t|
+        if File.exists?(t)
+            term = t
+            break
+        end
+    end
+        
+    exec("#{term} --command \"ssh -XY #{entry.text}\"")
     Gtk.main_quit
   end
 
